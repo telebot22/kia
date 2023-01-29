@@ -36,55 +36,17 @@ public class ApiService {
         list = Arrays.asList(baseData.split(""));
 
         //4.중복제거
-        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>();
-        for(String item : list){
-            linkedHashSet.add(item);
-        }
+        LinkedHashSet<String> linkedHashSet = StringUtils.deduplication(list);
 
         //5.중복제거 후 1차 오름차순 소트 ( 대소문자 정렬 후 + 숫자 )
-        List<String> atomicList = new ArrayList<String>();
-        atomicList.addAll(linkedHashSet);
-        System.out.println("중복제거         : " + linkedHashSet);
-        atomicList.sort(Comp);
-
+        List<String> atomicList = StringUtils.AlphaNumericSort(linkedHashSet);
         System.out.println("1차 오름차순 정렬 : " + atomicList);
+
         //6.리스트에서 숫자 분리
-        List<String> numberArray = new ArrayList<>();
-        //atomiclist에서 숫자 분리
-        for(String str : atomicList){
-            if(str.charAt(0) >= 48 && str.charAt(0) <= 57){
-                numberArray.add(str);
-            }
-        }
+        List<String> numberArray = StringUtils.SeperateNumArray(atomicList);
 
         //7.최종 정렬
-        int numberIndex = 0;
-        int numberMaxIndex = numberArray.size();
-        List<String> ResultArray = new ArrayList<String>();
-
-        //첫 문자열 생성
-        ResultArray.add(atomicList.get(0));
-
-        //숫자 재배치
-        for(int i = 1; i < atomicList.size() - numberMaxIndex ; i++){
-
-            // 마지막 순서가 아니고 내 문자가 다음 문자보다 작으면 // i < atomiclist.size() - numbermaxindex -1 &&
-            if(!atomicList.get(i).toLowerCase().equals(atomicList.get(i-1).toLowerCase())){
-                if(numberIndex < numberMaxIndex) {
-                    ResultArray.add(numberArray.get(numberIndex));
-                }
-                numberIndex++;
-            }
-            ResultArray.add(atomicList.get(i));
-        }
-
-        //8.남은 숫자 재배치
-        if(numberIndex < numberMaxIndex)
-        {
-            for(int remainPoint = numberIndex ; remainPoint < numberMaxIndex ; remainPoint++){
-                ResultArray.add(numberArray.get(remainPoint));
-            }
-        }
+        List<String> ResultArray = StringUtils.finalSort(atomicList, numberArray);
 
         //9.최종 문자열 생성
         StringBuilder finalResultStringBuilder = new StringBuilder();
@@ -178,19 +140,5 @@ public class ApiService {
     public void WriteLog(String target, boolean isSuccess){
         System.out.println(String.format("%s call is %s", target, isSuccess ? "successed" : "failed"));
     }
-
-
-    public Comparator<String> Comp = new Comparator<String>() {
-
-        static String[] RefArr  = {"A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f", "G", "g", "H", "h", "I", "i", "J", "j", "K", "k", "L", "l", "M", "m", "N", "n", "O", "o", "P", "p", "Q", "q", "R", "r", "S", "s", "T", "t", "U", "u", "V", "v", "W", "w", "X", "x", "Y", "y", "Z", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        @Override
-        public int compare(String s1, String s2) {
-            List<String> reference = new ArrayList<String>(Arrays.asList(RefArr));
-
-            Integer i1 = reference.indexOf(s1);
-            Integer i2 = reference.indexOf(s2);
-            return i1.compareTo(i2);
-        }
-    };
 
 }
