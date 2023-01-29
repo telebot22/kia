@@ -1,24 +1,26 @@
-package com.mcaniri.restapi.sample.service;
+package com.kia.career.service;
 
-import com.mcaniri.restapi.sample.domain.CacheData;
+import com.kia.career.domain.CacheData;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 
-//https://sunghs.tistory.com/132
+
 @Service
 public class CacheService {
-    private static final CacheData CHECK_DATA = new CacheData();
+    private static final CacheData EMPTY_DATA = new CacheData();
 
+    //Bean에 설정된 ConcurrentMapCache저장소명에 cacheNames = "HtmlMergeData"이 들어간다.
+    //해당 Key의 경우 캐시데이터가 있어 Value가 존자해면 getCashData는 수행되지 않고
+    //캐시에 있는 Key에 대응된 Value가 리턴된다.
     @Cacheable(cacheNames = "HtmlMergeData", key = "#key")
-    public CacheData getCheckData(final String key){
-        System.out.println("Cache 없음 데이터 재조회 및 캐시 생성 필요");
-        return CHECK_DATA;
+    public CacheData getCacheData(final String key){
+        System.out.println("Cache 없음 데이터 재 조회 및 캐시 생성 필요");
+        return EMPTY_DATA;
     }
     
     @CachePut(cacheNames = "HtmlMergeData", key = "#key")

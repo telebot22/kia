@@ -1,7 +1,6 @@
-package com.mcaniri.restapi.sample.domain;
+package com.kia.career.domain;
 
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data

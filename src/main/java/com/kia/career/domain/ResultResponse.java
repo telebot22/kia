@@ -1,13 +1,16 @@
 package com.kia.career.domain;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 
 @Data
-public class Response {
+public class ResultResponse {
+    @JsonSetter("Status")
     public String Status;
+    @JsonSetter("Merge")
     public String Merge;
 
-    public Response(String status, String merge){
+    public ResultResponse(String status, String merge){
         this.Status = status;
         this.Merge  = merge;
     }
